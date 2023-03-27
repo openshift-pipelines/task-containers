@@ -30,7 +30,7 @@ if ! skopeo inspect --creds "$SOURCE_AUTH_USERNAME:$SOURCE_AUTH_PASSWORD" "docke
 fi
 
 # Run the skopeo-copy task
-if ! tekton pipeline start skopeo-copy -p SOURCE_REGISTRY="$SOURCE_REGISTRY" \
+if ! tkn pipeline start skopeo-copy -p SOURCE_REGISTRY="$SOURCE_REGISTRY" \
   -p DESTINATION_REGISTRY="$DESTINATION_REGISTRY" \
   -p SOURCE_AUTH_USERNAME="$SOURCE_AUTH_USERNAME" \
   -p SOURCE_AUTH_PASSWORD="$SOURCE_AUTH_PASSWORD" \
