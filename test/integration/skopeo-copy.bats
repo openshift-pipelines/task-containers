@@ -2,7 +2,6 @@
 
 
 # Set up test environment
-# ...
 
 source ./test/helper/helper.sh
 
@@ -44,4 +43,3 @@ fi
 
 # Clean up test environment
 kubectl delete -f templates/task-sc.yaml
-# ...
