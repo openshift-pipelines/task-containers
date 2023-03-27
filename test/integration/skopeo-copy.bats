@@ -15,10 +15,10 @@ read -p "Enter source registry URL: " source_registry
 read -p "Enter destination registry URL: " destination_registry
 read -p "Enter source registry username: " source_auth_username
 read -p "Enter source registry password: " -s source_auth_password
-echo
+echo  "Source registry Credentials are taken as input"
 read -p "Enter destination registry username: " destination_auth_username
 read -p "Enter destination registry password: " -s destination_auth_password
-echo  "Credentials are taken as input"
+echo  "Destination registry Credentials are taken as input"
 
 # Execute test case
 tkn task start skopeo-copy \
