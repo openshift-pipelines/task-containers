@@ -1,0 +1,35 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: s2i-go-tr
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.11.3"
+    tekton.dev/tags: s2i, go, workspace
+    tekton.dev/displayName: "s2i go"
+spec:
+  description: >-
+    s2i-go task clones a Git repository and builds and
+    pushes a container image using S2I and a Go builder image.
+
+  params:
+    - name: PATH_CONTEXT
+      description: The location of the path to run s2i from.
+      default: .
+      type: string
+  workspaces:
+    - name: source
+      mountPath: /workspace/source
+  steps:
+    - name: generate
+      image: quay.io/openshift-pipeline/s2i:latest
+      workingDir: $(workspaces.source.path)
+      command: ['s2i', 'build', '$(params.PATH_CONTEXT)', 'openshift/go-14-centos7', '--as-dockerfile', '/gen-source/Dockerfile.gen']
+      volumeMounts:
+        - name: gen-source
+          mountPath: /gen-source
+  volumes:
+    - name: gen-source
+      emptyDir: {}
