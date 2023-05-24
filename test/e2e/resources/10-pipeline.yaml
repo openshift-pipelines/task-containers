@@ -1,0 +1,27 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  labels:
+    name: task-s2i-go
+  name: task-s2i-go
+spec:
+  params:
+    - name: PATH_CONTEXT
+      description: The location of the path to run s2i from.
+      default: .
+      type: string
+
+  workspaces:
+    - name: source
+      
+  tasks:
+    - name: s2i-go-tr
+      taskRef:
+        name: s2i-go-tr
+      workspaces:
+        - name: source
+          workspace: source
+      params:
+        - name: PATH_CONTEXT
+          value: $(params.PATH_CONTEXT)

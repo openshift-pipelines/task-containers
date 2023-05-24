@@ -34,7 +34,33 @@ jobs:
         with:
           pipeline_version: v0.41.0
           cli_version: v0.29.1
-
       # running end-to-end test target
       - name: test-e2e
         run: make test-e2e
+
+  test-s2ie2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - uses: azure/setup-helm@v3
+
+      # instantiate a KinD (Kubernetes in Docker) cluster, installs `kubectl` and configures the
+      # `kubeconfig` to reach the local cluster
+      - uses: helm/kind-action@v1.5.0
+        with:
+          cluster_name: kind
+          wait: 120s
+
+      # installs Tekton Pipelines and `tkn` command line, including a local Container-Registry with
+      # settings to reach it during testing
+      - uses: openshift-pipelines/setup-tektoncd@v1
+        with:
+          pipeline_version: v0.41.0
+          cli_version: v0.29.1
+
+      # running end-to-end test target
+      - name: test-s2ie2e
+        run: make test-s2ie2e
