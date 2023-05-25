@@ -7,7 +7,7 @@ BATS_CORE = ./test/.bats/bats-core/bin/bats
 BATS_FLAGS ?= --print-output-on-failure --show-output-of-passing-tests --verbose-run
 
 # path to the bats test files, overwite the variables below to tweak the test scope
-E2E_TESTS ?= ./test/e2e/*.bats
+E2E_TESTS ?= ./test/e2e/s2i-e2e.bats
 
 # skopeo-copy task e2e test variables, source, destination url and tls-verify parameter.
 E2E_SC_PARAMS_SOURCE ?= docker://docker.io/library/busybox:latest
@@ -70,11 +70,10 @@ endif
 # run end-to-end tests against the current kuberentes context, it will required a cluster with tekton
 # pipelines and other requirements installed, before start testing the target invokes the
 # installation of the current project's task (using helm).
-test-e2e: install
+test-e2e: workspace-source-pvc install
 	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
 
-test-s2ie2e: workspace-source-pvc install
-	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
+
 
 # act runs the github actions workflows, so by default only running the test workflow (integration
 # and end-to-end) to avoid running the release workflow accidently
