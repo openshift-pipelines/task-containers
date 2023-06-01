@@ -15,6 +15,13 @@ E2E_SC_PARAMS_DESTINATION ?= docker://registry.registry.svc.cluster.local:32222/
 # setting tls-verify as false disables the HTTPS client as well, something we need for e2e testing
 E2E_SC_PARAMS_TLS_VERIFY ?= false
 
+E2E_SC_PARAMS_PATH_CONTEXT ?= .
+
+# workspace "source" pvc resource and name
+E2E_PVC ?= test/e2e/resources/pvc.yaml
+E2E_PVC_NAME ?= task-s2i-go
+
+
 # path to the github actions testing workflows
 ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
 
@@ -71,10 +78,19 @@ helm-package:
 clean:
 	rm -rf $(CHART_NAME)-*.tgz > /dev/null 2>&1 || true
 
+
+# applies the pvc resource file, if the file exists
+.PHONY: workspace-source-pvc
+workspace-source-pvc:
+ifneq ("$(wildcard $(E2E_PVC))","")
+	kubectl apply -f $(E2E_PVC)
+endif
+
+
 # run end-to-end tests against the current kuberentes context, it will required a cluster with tekton
 # pipelines and other requirements installed, before start testing the target invokes the
 # installation of the current project's task (using helm).
-test-e2e: task-populate-workspace workspace-source-pvc-buildah install
+test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc install
 	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
 
 # act runs the github actions workflows, so by default only running the test workflow (integration
