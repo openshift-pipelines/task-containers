@@ -11,17 +11,41 @@ spec:
       description: The location of the path to run s2i from.
       default: .
       type: string
+    - name: IMAGE
+      description: The location of the path to run s2i from.
+      default: s2i-test-demo
+      type: string
 
   workspaces:
     - name: source
       
   tasks:
+    - name: git
+      taskRef:
+        name: git
+      workspaces:
+        - name: output
+          workspace: source
+      params:
+        - name: URL
+          value: https://github.com/Senjuti256/goHelloWorld
+
     - name: s2i-go-tr
       taskRef:
         name: s2i-go-tr
+      runAfter:
+        - git
       workspaces:
         - name: source
           workspace: source
       params:
         - name: PATH_CONTEXT
           value: $(params.PATH_CONTEXT)
+        - name: IMAGE
+          value: $(params.IMAGE)
+        - name: VERSION
+          value: $(params.VERSION)
+        - name: TLS_VERIFY
+          value: $(params.TLS_VERIFY)
+        - name: VERBOSE
+          value: $(params.VERBOSE)

@@ -9,6 +9,10 @@ BATS_FLAGS ?= --print-output-on-failure --show-output-of-passing-tests --verbose
 # path to the bats test files, overwite the variables below to tweak the test scope
 E2E_TESTS ?= ./test/e2e/s2i-e2e.bats
 
+# external task dependency to run the end-to-end tests pipeline
+TASK_GIT ?= https://github.com/openshift-pipelines/task-git/releases/download/0.0.1/task-git-0.0.1.yaml
+
+
 # skopeo-copy task e2e test variables, source, destination url and tls-verify parameter.
 E2E_SC_PARAMS_SOURCE ?= docker://docker.io/library/busybox:latest
 E2E_SC_PARAMS_DESTINATION ?= docker://registry.registry.svc.cluster.local:32222/busybox:latest
@@ -20,6 +24,7 @@ E2E_SC_PARAMS_PATH_CONTEXT ?= .
 # workspace "source" pvc resource and name
 E2E_PVC ?= test/e2e/resources/pvc.yaml
 E2E_PVC_NAME ?= task-s2i-go
+
 
 
 # path to the github actions testing workflows
@@ -58,6 +63,12 @@ default: helm-template
 install:
 	$(call render-template) |kubectl $(ARGS) apply -f -
 
+# installs "git" task directly from the informed location, the task is required to run the test-e2e
+# target, it will hold the "source" workspace data
+task-git:
+	kubectl apply -f ${TASK_GIT}
+
+
 task-populate-workspace:
 	kubectl apply -f ${E2E_BUILDAH_POPULATE_WORKSPACE}
 
@@ -90,7 +101,7 @@ endif
 # run end-to-end tests against the current kuberentes context, it will required a cluster with tekton
 # pipelines and other requirements installed, before start testing the target invokes the
 # installation of the current project's task (using helm).
-test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc install
+test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc task-git install
 	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
 
 
