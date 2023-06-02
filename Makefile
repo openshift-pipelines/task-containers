@@ -17,6 +17,11 @@ REGISTRY_NAMESPACE ?= task-containers
 IMAGE_BASE ?= $(REGISTRY_URL)/$(REGISTRY_NAMESPACE)
 
 # end-to-end test source image to be copied by skopeo
+# external task dependency to run the end-to-end tests pipeline
+TASK_GIT ?= https://github.com/openshift-pipelines/task-git/releases/download/0.0.1/task-git-0.0.1.yaml
+
+
+# skopeo-copy task e2e test variables, source, destination url and tls-verify parameter.
 E2E_SC_PARAMS_SOURCE ?= docker://docker.io/library/busybox:latest
 # end-to-end test destination image name and tag
 E2E_SC_IMAGE_TAG ?= busybox:latest
@@ -26,6 +31,7 @@ E2E_SC_PARAMS_DESTINATION ?= docker://$(IMAGE_BASE)/${E2E_SC_IMAGE_TAG}
 # setting tls-verify as false disables the HTTPS client as well, something we need for e2e testing
 # using the internal container registry (HTTP based)
 E2E_PARAMS_TLS_VERIFY ?= false
+
 
 # path to the github actions testing workflows
 ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
@@ -69,6 +75,14 @@ install:
 # applies the resource file
 task-containerfile-stub:
 	kubectl apply -f ${E2E_BUILDAH_TASK_CONTAINERFILE_STUB}
+# installs "git" task directly from the informed location, the task is required to run the test-e2e
+# target, it will hold the "source" workspace data
+task-git:
+	kubectl apply -f ${TASK_GIT}
+
+
+task-populate-workspace:
+	kubectl apply -f ${E2E_BUILDAH_POPULATE_WORKSPACE}
 
 # applies the pvc resource file, if the file exists
 .PHONY: workspace-source-pvc-buildah
@@ -99,7 +113,7 @@ endif
 # run end-to-end tests against the current kuberentes context, it will required a cluster with tekton
 # pipelines and other requirements installed, before start testing the target invokes the
 # installation of the current project's task (using helm).
-test-e2e: task-populate-workspace workspace-source-pvc-buildah install
+test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc task-git install
 	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
 
 
