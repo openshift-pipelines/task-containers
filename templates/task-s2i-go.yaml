@@ -27,14 +27,14 @@ spec:
       type: string
     - name: TLSVERIFY
       description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
-      default: "true"
+      default: "false"
       type: string
     - name: IMAGE
       description: Location of the repo where image has to be pushed
       type: string
     - name: VERBOSE
       type: string
-      default: "false"
+      default: "true"
       description: |
         Shows a more verbose (debug) output.
   workspaces:
@@ -81,9 +81,6 @@ spec:
           mountPath: /var/lib/containers
         - name: gen-source
           mountPath: /gen-source
-    - name: digest-to-results
-      image: quay.io/buildah/stable:latest
-      script: cat /gen-source/image-digest | tee /tekton/results/IMAGE_DIGEST
   volumes:
     - name: varlibcontainers
       emptyDir: {}
