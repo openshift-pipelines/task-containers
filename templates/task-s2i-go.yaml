@@ -81,6 +81,12 @@ spec:
           mountPath: /var/lib/containers
         - name: gen-source
           mountPath: /gen-source
+    - name: display-image-digest
+      image: busybox
+      command: ['cat', '/gen-source/image-digest']
+      volumeMounts:
+         - name: gen-source
+           mountPath: /gen-source
   volumes:
     - name: varlibcontainers
       emptyDir: {}
