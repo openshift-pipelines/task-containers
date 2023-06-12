@@ -15,7 +15,7 @@ readonly E2E_S2I_IMAGE="${E2E_S2I_IMAGE:-}"
   [ -n "${E2E_PARAM_PATH_CONTEXT}" ]
   [ -n "${E2E_PVC_NAME}" ]
   [ -n "${E2E_S2I_IMAGE}" ]
-  [ -n "${E2E_S2I_TLS_VERIFY}" ] # Setting TLS_VERIFY=false
+  [ -n "${E2E_S2I_TLS_VERIFY}" ] 
 
 
   # Cleaning up existing resources before starting a new pipelinerun
@@ -23,7 +23,7 @@ readonly E2E_S2I_IMAGE="${E2E_S2I_IMAGE:-}"
   assert_success
 
   # E2E PipelineRun
-  run tkn pipeline start s2i-go-tr \
+  run tkn pipeline start s2i-golang-pr \
     --param="PATH_CONTEXT=${E2E_PARAM_PATH_CONTEXT}" \
     --param="TLSVERIFY=${E2E_S2I_TLS_VERIFY}" \
     --param="IMAGE=${E2E_S2I_IMAGE}" \

@@ -3,6 +3,8 @@ images:
   bash: docker.io/library/bash:latest
   skopeo: quay.io/skopeo/stable:latest
   buildah: registry.access.redhat.com/ubi8/buildah:latest
+  s2igo: quay.io/openshift-pipeline/s2i:latest
+  s2ibuildah: quay.io/buildah/stable:latest
 
 annotations:
   tekton.dev/pipelines.minVersion: "0.38.0"

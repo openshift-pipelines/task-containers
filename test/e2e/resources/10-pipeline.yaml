@@ -36,9 +36,9 @@ spec:
         - name: URL
           value: https://github.com/Senjuti256/goHelloWorld
 
-    - name: s2i-go-tr
+    - name: s2i-golang-pr
       taskRef:
-        name: s2i-go-tr
+        name: s2i-golang-pr
       runAfter:
         - git
       workspaces:

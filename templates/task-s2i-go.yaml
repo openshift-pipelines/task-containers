@@ -1,13 +1,13 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: s2i-go-tr
+  name: s2i-golang-pr
   labels:
-    app.kubernetes.io/version: "0.1"
+    app.kubernetes.io/version: {{ .Chart.Version }}
+{{- if .Values.annotations }}
   annotations:
-    tekton.dev/pipelines.minVersion: "0.11.3"
-    tekton.dev/tags: s2i, go, workspace
-    tekton.dev/displayName: "s2i go"
+  {{- .Values.annotations | toYaml | nindent 4 }}
+{{- end }}
 spec:
   description: >-
     s2i-go task clones a Git repository and builds and
