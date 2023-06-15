@@ -34,7 +34,7 @@ spec:
           workspace: source
       params:
         - name: URL
-          value: https://github.com/Senjuti256/goHelloWorld
+          value: https://github.com/Senjuti256/goHelloWorld     #This will basically contain the reference to the github repository containing the Go application source code whose image we want to generate.
     - name: s2i-golang-pr
       taskRef:
         name: s2i-golang-pr
