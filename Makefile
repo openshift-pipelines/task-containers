@@ -18,13 +18,12 @@ E2E_SC_PARAMS_SOURCE ?= docker://docker.io/library/busybox:latest
 E2E_SC_PARAMS_DESTINATION ?= docker://registry.registry.svc.cluster.local:32222/busybox:latest
 # setting tls-verify as false disables the HTTPS client as well, something we need for e2e testing
 E2E_SC_PARAMS_TLS_VERIFY ?= false
-
+#The location of the path to run skopeo copy from.
 E2E_SC_PARAMS_PATH_CONTEXT ?= .
 
 # workspace "source" pvc resource and name
 E2E_PVC ?= test/e2e/resources/pvc.yaml
 E2E_PVC_NAME ?= task-s2i-go
-
 
 
 # path to the github actions testing workflows
@@ -41,7 +40,7 @@ E2E_BUILDAH_REGISTRY ?= registry.registry.svc.cluster.local:32222/test-buildah:l
 E2E_BUILDAH_TLS_VERIFY ?= false
 E2E_BUILDAH_POPULATE_WORKSPACE ?= test/e2e/resources/populate-workspace-task.yaml
 
-
+#The local container registry to push the image during e2e testing of s2i-golang task
 E2E_S2I_IMAGE ?= registry.registry.svc.cluster.local:32222/test-s2i:latest
 E2E_S2I_TLS_VERIFY ?= false
 
