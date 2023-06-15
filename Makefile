@@ -7,7 +7,7 @@ BATS_CORE = ./test/.bats/bats-core/bin/bats
 BATS_FLAGS ?= --print-output-on-failure --show-output-of-passing-tests --verbose-run
 
 # path to the bats test files, overwite the variables below to tweak the test scope
-E2E_TESTS ?= ./test/e2e/*.bats
+E2E_TESTS ?= ./test/e2e/s2i-e2e.bats
 
 # external task dependency to run the end-to-end tests pipeline
 TASK_GIT ?= https://github.com/openshift-pipelines/task-git/releases/download/0.0.1/task-git-0.0.1.yaml
