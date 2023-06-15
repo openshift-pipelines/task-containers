@@ -15,7 +15,7 @@ readonly E2E_S2I_IMAGE="${E2E_S2I_IMAGE:-}"
   [ -n "${E2E_PARAM_PATH_CONTEXT}" ]
   [ -n "${E2E_PVC_NAME}" ]
   [ -n "${E2E_S2I_IMAGE}" ]
-  [ -n "${E2E_S2I_TLS_VERIFY}" ] 
+  [ -n "${E2E_S2I_TLS_VERIFY}" ] # Setting TLS_VERIFY=false
 
 
   # Cleaning up existing resources before starting a new pipelinerun

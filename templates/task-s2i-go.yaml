@@ -3,11 +3,11 @@ kind: Task
 metadata:
   name: s2i-golang-pr
   labels:
-    app.kubernetes.io/version: {{ .Chart.Version }}
-{{- if .Values.annotations }}
+    app.kubernetes.io/version: "0.1"
   annotations:
-  {{- .Values.annotations | toYaml | nindent 4 }}
-{{- end }}
+    tekton.dev/pipelines.minVersion: "0.11.3"
+    tekton.dev/tags: s2i, go, workspace
+    tekton.dev/displayName: "s2i go"
 spec:
   description: >-
     s2i-go task clones a Git repository and builds and

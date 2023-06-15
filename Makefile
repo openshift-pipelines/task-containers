@@ -18,7 +18,7 @@ E2E_SC_PARAMS_SOURCE ?= docker://docker.io/library/busybox:latest
 E2E_SC_PARAMS_DESTINATION ?= docker://registry.registry.svc.cluster.local:32222/busybox:latest
 # setting tls-verify as false disables the HTTPS client as well, something we need for e2e testing
 E2E_SC_PARAMS_TLS_VERIFY ?= false
-# The location of the path to run s2i from.
+
 E2E_SC_PARAMS_PATH_CONTEXT ?= .
 
 # workspace "source" pvc resource and name
@@ -41,8 +41,7 @@ E2E_BUILDAH_REGISTRY ?= registry.registry.svc.cluster.local:32222/test-buildah:l
 E2E_BUILDAH_TLS_VERIFY ?= false
 E2E_BUILDAH_POPULATE_WORKSPACE ?= test/e2e/resources/populate-workspace-task.yaml
 
-# s2i-go task e2e test variables.
-# target local container registry for s2i-go e2e testing with image name and tag.
+
 E2E_S2I_IMAGE ?= registry.registry.svc.cluster.local:32222/test-s2i:latest
 E2E_S2I_TLS_VERIFY ?= false
 

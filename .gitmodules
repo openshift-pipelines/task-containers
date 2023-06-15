@@ -10,3 +10,8 @@
 [submodule "test/.bats/bats-file"]
 	path = test/.bats/bats-file
 	url = https://github.com/bats-core/bats-file.git
+[submodule "upload/src"]
+	path = upload/src
+	url = https://github.com/Senjuti256/goHelloWorld
+	
+
