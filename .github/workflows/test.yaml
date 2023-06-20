@@ -34,6 +34,7 @@ jobs:
         with:
           pipeline_version: v0.41.0
           cli_version: v0.29.1
+          
       # running end-to-end test target
       - name: test-e2e
         run: make test-e2e
