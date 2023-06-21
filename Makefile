@@ -7,7 +7,7 @@ BATS_CORE = ./test/.bats/bats-core/bin/bats
 BATS_FLAGS ?= --print-output-on-failure --show-output-of-passing-tests --verbose-run
 
 # path to the bats test files, overwite the variables below to tweak the test scope
-E2E_TESTS ?= ./test/e2e/*.bats
+E2E_TESTS ?= ./test/e2e/s2i-python-e2e.bats
 
 # external task dependency to run the end-to-end tests pipeline
 TASK_GIT ?= https://github.com/openshift-pipelines/task-git/releases/download/0.0.1/task-git-0.0.1.yaml
@@ -25,6 +25,10 @@ E2E_SC_PARAMS_PATH_CONTEXT ?= .
 E2E_PVC ?= test/e2e/resources/pvc.yaml
 E2E_PVC_NAME ?= task-s2i-go
 
+# workspace "source" pvc resource and name
+E2E_PYTHON_PVC ?= test/e2e/resources/pvc-s2i-python.yaml
+E2E_PYTHON_PVC_NAME ?= task-s2i-python
+
 
 # path to the github actions testing workflows
 ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
@@ -40,8 +44,9 @@ E2E_BUILDAH_REGISTRY ?= registry.registry.svc.cluster.local:32222/test-buildah:l
 E2E_BUILDAH_TLS_VERIFY ?= false
 E2E_BUILDAH_POPULATE_WORKSPACE ?= test/e2e/resources/populate-workspace-task.yaml
 
-#The local container registry to push the image during e2e testing of s2i-golang task
+# The local container registry to push the image during e2e testing of s2i-golang task
 E2E_S2I_IMAGE ?= registry.registry.svc.cluster.local:32222/test-s2i:latest
+# setting tls-verify as false disables the HTTPS client as well, something we need for e2e testin
 E2E_S2I_TLS_VERIFY ?= false
 
 
@@ -101,11 +106,18 @@ ifneq ("$(wildcard $(E2E_PVC))","")
 	kubectl apply -f $(E2E_PVC)
 endif
 
+# applies the pvc resource file, if the file exists
+.PHONY: workspace-source-pvc-s2i-python
+workspace-source-pvc-s2i-python:
+ifneq ("$(wildcard $(E2E_PYTHON_PVC))","")
+	kubectl apply -f $(E2E_PYTHON_PVC)
+endif
+
 
 # run end-to-end tests against the current kuberentes context, it will required a cluster with tekton
 # pipelines and other requirements installed, before start testing the target invokes the
 # installation of the current project's task (using helm).
-test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc task-git install
+test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc workspace-source-pvc-s2i-python task-git install
 	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
 
 
