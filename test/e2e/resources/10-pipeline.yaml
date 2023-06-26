@@ -14,7 +14,7 @@ spec:
     - name: IMAGE
       description: Full qualified registry url, including image name and tag.
       type: string
-    - name: TLS_VERIFY
+    - name: TLSVERIFY
       type: string
       description: |
         Sets the TLS verification flags
@@ -34,8 +34,8 @@ spec:
           workspace: source
       params:
         - name: URL
-          value: https://github.com/hackersandslackers/golang-helloworld      # This will basically contain the reference to the github repository containing the Golang application source code whose image we want to generate.
-        - name: REVISION                                                      # Specify the branch of the github repository exclusively if it is not main branch. 
+          value: https://github.com/hackersandslackers/golang-helloworld      #This will basically contain the reference to the github repository containing the Go application source code whose image we want to generate.
+        - name: REVISION
           value: master
     - name: s2i-golang-pr
       taskRef:
