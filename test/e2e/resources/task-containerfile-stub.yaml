@@ -12,4 +12,4 @@ spec:
       workingDir: /workspace/source
       script: |
         set -x
-        echo "FROM scratch" > Containerfile
+        echo "FROM scratch" > Dockerfile

@@ -34,7 +34,7 @@ spec:
         context.
     - name: CONTAINERFILE_PATH
       type: string
-      default: ./Containerfile
+      default: ./Dockerfile
       description: |
         Path to the `Containerfile` (or `Dockerfile`).
     - name: STORAGE_DRIVER

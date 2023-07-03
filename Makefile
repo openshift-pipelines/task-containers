@@ -7,7 +7,7 @@ BATS_CORE = ./test/.bats/bats-core/bin/bats
 BATS_FLAGS ?= --print-output-on-failure --show-output-of-passing-tests --verbose-run
 
 # path to the bats test files, overwite the variables below to tweak the test scope
-E2E_TESTS ?= ./test/e2e/s2i-e2e.bats
+E2E_TESTS ?= ./test/e2e/s2i-python-e2e.bats
 
 # container registry URL, usually hostname and port
 REGISTRY_URL ?= registry.registry.svc.cluster.local:32222
@@ -32,6 +32,18 @@ E2E_SC_PARAMS_DESTINATION ?= docker://$(IMAGE_BASE)/${E2E_SC_IMAGE_TAG}
 # using the internal container registry (HTTP based)
 E2E_PARAMS_TLS_VERIFY ?= false
 
+# workspace "source" pvc resource and name
+E2E_DF_PVC ?= test/e2e/resources/gen-source-pvc.yaml
+E2E_DF_PVC_NAME ?= gen-source-pvc
+
+# workspace "source" pvc resource and name
+E2E_PVC ?= test/e2e/resources/pvc.yaml
+E2E_PVC_NAME ?= task-s2i-go
+
+# workspace "source" pvc resource and name
+E2E_PYTHON_PVC ?= test/e2e/resources/pvc-s2i-python.yaml
+E2E_PYTHON_PVC_NAME ?= task-s2i-python
+
 
 # path to the github actions testing workflows
 ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
@@ -49,6 +61,15 @@ E2E_BUILDAH_PARAMS_IMAGE ?= $(IMAGE_BASE)/${E2E_BUILDAH_IMAGE_TAG}
 
 # path to the github actions testing workflows
 ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
+
+
+# The local container registry to push the image during e2e testing of s2i-golang task
+E2E_S2I_IMAGE_TAG ?= task-s2i:latest
+E2E_S2I_IMAGE ?=  $(IMAGE_BASE)/${E2E_S2I_IMAGE_TAG}
+# setting tls-verify as false disables the HTTPS client as well, something we need for e2e testin
+E2E_S2I_TLS_VERIFY ?= false
+
+
 
 # generic arguments employed on most of the targets
 ARGS ?=
@@ -81,9 +102,6 @@ task-git:
 	kubectl apply -f ${TASK_GIT}
 
 
-task-populate-workspace:
-	kubectl apply -f ${E2E_BUILDAH_POPULATE_WORKSPACE}
-
 # applies the pvc resource file, if the file exists
 .PHONY: workspace-source-pvc-buildah
 workspace-source-pvc-buildah:
@@ -110,10 +128,28 @@ ifneq ("$(wildcard $(E2E_PVC))","")
 endif
 
 
+# applies the pvc resource file, if the file exists
+.PHONY: workspace-source-pvc-s2i-python
+workspace-source-pvc-s2i-python:
+ifneq ("$(wildcard $(E2E_PYTHON_PVC))","")
+	kubectl apply -f $(E2E_PYTHON_PVC)
+endif
+
+
+
+# applies the pvc resource file, if the file exists
+.PHONY: workspace-source-pvc-dockerfile
+workspace-source-pvc-dockerfile:
+ifneq ("$(wildcard $(E2E_DF_PVC))","")
+	kubectl apply -f $(E2E_DF_PVC)
+endif
+
+
+
 # run end-to-end tests against the current kuberentes context, it will required a cluster with tekton
 # pipelines and other requirements installed, before start testing the target invokes the
 # installation of the current project's task (using helm).
-test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc task-git install
+test-e2e: task-containerfile-stub workspace-source-pvc-buildah workspace-source-pvc workspace-source-pvc-s2i-python workspace-source-pvc-dockerfile task-git install
 	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
 
 

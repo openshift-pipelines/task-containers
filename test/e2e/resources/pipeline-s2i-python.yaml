@@ -24,7 +24,7 @@ spec:
 
   workspaces:
     - name: source
-      
+
   tasks:
     - name: git
       taskRef:
@@ -70,7 +70,7 @@ spec:
         - name: SUBDIRECTORY
           value: $(params.SUBDIRECTORY)
         - name: CONTAINERFILE_PATH
-          value: $(params.CONTAINERFILE_PATH)
+          value: Dockerfile.gen                #/gen-source/Dockerfile #$(params.CONTAINERFILE_PATH)
         - name: STORAGE_DRIVER
           value: $(params.STORAGE_DRIVER)
         - name: BUILD_EXTRA_ARGS

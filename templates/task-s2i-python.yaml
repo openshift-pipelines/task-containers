@@ -44,46 +44,32 @@ spec:
     - name: generate
       image: quay.io/openshift-pipeline/s2i:latest
       workingDir: $(workspaces.source.path)
-      command: ['s2i', 'build', '$(params.PATH_CONTEXT)','registry.access.redhat.com/ubi8/python-39:latest', '--as-dockerfile', '/gen-source/Dockerfile.gen']
+      command: ['s2i', 'build', '$(params.PATH_CONTEXT)','registry.access.redhat.com/ubi8/python-39:latest', '--as-dockerfile', '/workspace/output/Dockerfile.gen']
       env:
         - name: HOME
           value: /tekton/home
-      volumeMounts:
-        - name: gen-source
-          mountPath: /gen-source
+      
     - name: check-dockerfile
       image: busybox
-      workingDir: /gen-source
-      command: ['sh', '-c', 'if [ -f "/gen-source/Dockerfile.gen" ]; then echo "Dockerfile generated successfully : "; cat "Dockerfile.gen"; else echo "Failed to generate Dockerfile"; exit 1; fi']
-      volumeMounts:
-        - name: gen-source
-          mountPath: /gen-source
+      workingDir: /workspace/output
+      command: ['sh', '-c', 'if [ -f "/workspace/output/Dockerfile.gen" ]; then echo "Dockerfile generated successfully : "; cat "Dockerfile.gen"; else echo "Failed to generate Dockerfile"; exit 1; fi']
+      
     - name: build
       image: quay.io/buildah/stable:latest
-      workingDir: /gen-source
-      command: ['buildah', 'bud', '--storage-driver=vfs', '--tls-verify=$(params.TLS_VERIFY)', '--layers', '-f', '/gen-source/Dockerfile.gen', '-t', '$(params.IMAGE)', '.']
+      workingDir: /workspace/output
+      command: ['buildah', 'bud', '--storage-driver=vfs', '--tls-verify=$(params.TLS_VERIFY)', '--layers', '-f', '/workspace/output/Dockerfile.gen', '-t', '$(params.IMAGE)', '.']
       volumeMounts:
         - name: varlibcontainers
           mountPath: /var/lib/containers
-        - name: gen-source
-          mountPath: /gen-source
-    - name: push
-      workingDir: $(workspaces.source.path)
-      image: quay.io/buildah/stable:latest
-      command: ['buildah', 'push', '--storage-driver=vfs', '--tls-verify=$(params.TLS_VERIFY)', '--digestfile=/gen-source/image-digest', '$(params.IMAGE)', 'docker://$(params.IMAGE)']
-      volumeMounts:
-        - name: varlibcontainers
-          mountPath: /var/lib/containers
-        - name: gen-source
-          mountPath: /gen-source
-    - name: display-image-digest
-      image: busybox
-      command: ['cat', '/gen-source/image-digest']
-      volumeMounts:
-         - name: gen-source
-           mountPath: /gen-source
+    
+
   volumes:
     - name: varlibcontainers
       emptyDir: {}
-    - name: gen-source
-      emptyDir: {}
+    
+
+
+
+
+
+
