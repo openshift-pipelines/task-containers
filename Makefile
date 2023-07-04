@@ -38,7 +38,7 @@ E2E_PARAMS_TLS_VERIFY ?= false
 #The location of the path to run skopeo copy from.
 E2E_SC_PARAMS_PATH_CONTEXT ?= .
 
-# workspace "source" pvc resource and name gor s2i-golang task
+# workspace "source" pvc resource and name for s2i-golang task
 E2E_PVC ?= test/e2e/resources/pvc.yaml
 E2E_PVC_NAME ?= task-s2i-go
 
