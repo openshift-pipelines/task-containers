@@ -27,7 +27,7 @@ readonly E2E_S2I_IMAGE="${E2E_S2I_IMAGE:-}"
     --param="PATH_CONTEXT=${E2E_PARAM_PATH_CONTEXT}" \
     --param="TLSVERIFY=${E2E_S2I_TLS_VERIFY}" \
     --param="IMAGE=${E2E_S2I_IMAGE}" \
-		--param="VERBOSE=true" \
+    --param="VERBOSE=true" \
     --workspace="name=source,claimName=${E2E_PVC_NAME},subPath=source" \
     --filename=test/e2e/resources/10-pipeline.yaml \
     --showlog >&3
