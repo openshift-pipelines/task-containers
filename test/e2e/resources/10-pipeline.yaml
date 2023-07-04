@@ -12,9 +12,15 @@ spec:
       default: .
       type: string
     - name: IMAGE
-      description: The location of the path to run s2i from.
-      default: s2i-test-demo
+      description: Full qualified registry url, including image name and tag.
       type: string
+    - name: TLSVERIFY
+      type: string
+      description: |
+        Sets the TLS verification flags
+    - name: VERBOSE
+      type: string
+      description: Verbose logging
 
   workspaces:
     - name: source
@@ -29,10 +35,9 @@ spec:
       params:
         - name: URL
           value: https://github.com/Senjuti256/goHelloWorld
-
-    - name: s2i-go-tr
+    - name: s2i-golang-pr
       taskRef:
-        name: s2i-go-tr
+        name: s2i-golang-pr
       runAfter:
         - git
       workspaces:
