@@ -7,7 +7,7 @@ BATS_CORE = ./test/.bats/bats-core/bin/bats
 BATS_FLAGS ?= --print-output-on-failure --show-output-of-passing-tests --verbose-run
 
 # path to the bats test files, overwite the variables below to tweak the test scope
-E2E_TESTS ?= ./test/e2e/s2i-python-e2e.bats
+E2E_TESTS ?= ./test/e2e/*.bats
 
 # container registry URL, usually hostname and port
 REGISTRY_URL ?= registry.registry.svc.cluster.local:32222
