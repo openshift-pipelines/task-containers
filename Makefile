@@ -38,30 +38,13 @@ E2E_PARAMS_TLS_VERIFY ?= false
 #The location of the path to run skopeo copy from.
 E2E_SC_PARAMS_PATH_CONTEXT ?= .
 
-# workspace "source" pvc resource and name
+# workspace "source" pvc resource and name gor s2i-golang task
 E2E_PVC ?= test/e2e/resources/pvc.yaml
 E2E_PVC_NAME ?= task-s2i-go
 
-# workspace "source" pvc resource and name
+# workspace "source" pvc resource and name for s2i-python task
 E2E_PYTHON_PVC ?= test/e2e/resources/pvc-s2i-python.yaml
 E2E_PYTHON_PVC_NAME ?= task-s2i-python
-
-
-# workspace "source" pvc resource and name
-E2E_DF_PVC ?= test/e2e/resources/gen-source-pvc.yaml
-E2E_DF_PVC_NAME ?= gen-source-pvc
-
-# workspace "source" pvc resource and name
-E2E_PVC ?= test/e2e/resources/pvc.yaml
-E2E_PVC_NAME ?= task-s2i-go
-
-# workspace "source" pvc resource and name
-E2E_PYTHON_PVC ?= test/e2e/resources/pvc-s2i-python.yaml
-E2E_PYTHON_PVC_NAME ?= task-s2i-python
-
-
-# path to the github actions testing workflows
-ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
 
 # workspace "source" pvc resource and name
 E2E_BUILDAH_PVC ?= test/e2e/resources/pvc-buildah.yaml
@@ -74,9 +57,6 @@ E2E_BUILDAH_IMAGE_TAG ?= task-buildah:latest
 # fully qualified container image passed to buidah task IMAGE param
 E2E_BUILDAH_PARAMS_IMAGE ?= $(IMAGE_BASE)/${E2E_BUILDAH_IMAGE_TAG}
 
-# path to the github actions testing workflows
-ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
-
 
 # The local container registry to push the image during e2e testing of s2i-golang task
 E2E_S2I_IMAGE_TAG ?= task-s2i:latest
@@ -86,10 +66,8 @@ E2E_S2I_TLS_VERIFY ?= false
 
 
 
-# The local container registry to push the image during e2e testing of s2i-golang task
-E2E_S2I_IMAGE ?= registry.registry.svc.cluster.local:32222/test-s2i:latest
-# setting tls-verify as false disables the HTTPS client as well, something we need for e2e testin
-E2E_S2I_TLS_VERIFY ?= false
+# path to the github actions testing workflows
+ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
 
 
 # generic arguments employed on most of the targets
@@ -159,7 +137,7 @@ endif
 # run end-to-end tests against the current kuberentes context, it will required a cluster with tekton
 # pipelines and other requirements installed, before start testing the target invokes the
 # installation of the current project's task (using helm).
-test-e2e: task-populate-workspace workspace-source-pvc-buildah workspace-source-pvc workspace-source-pvc-s2i-python task-git install
+test-e2e: task-containerfile-stub workspace-source-pvc-buildah workspace-source-pvc workspace-source-pvc-s2i-python task-git install
 	$(BATS_CORE) $(BATS_FLAGS) $(ARGS) $(E2E_TESTS)
 
 

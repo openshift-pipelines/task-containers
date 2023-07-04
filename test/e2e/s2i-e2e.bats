@@ -25,7 +25,7 @@ readonly E2E_S2I_IMAGE="${E2E_S2I_IMAGE:-}"
   # E2E PipelineRun
   run tkn pipeline start task-s2i-go \
     --param="PATH_CONTEXT=${E2E_PARAM_PATH_CONTEXT}" \
-    --param="TLSVERIFY=${E2E_S2I_TLS_VERIFY}" \
+    --param="TLS_VERIFY=${E2E_S2I_TLS_VERIFY}" \
     --param="IMAGE=${E2E_S2I_IMAGE}" \
     --param="VERBOSE=true" \
     --workspace="name=source,claimName=${E2E_PVC_NAME},subPath=source" \

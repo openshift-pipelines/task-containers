@@ -25,7 +25,7 @@ spec:
       description: The location of the path to run s2i from.
       default: .
       type: string
-    - name: TLSVERIFY
+    - name: TLS_VERIFY
       description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
       default: "false"
       type: string
@@ -63,10 +63,7 @@ spec:
     - name: build
       image: quay.io/buildah/stable:latest
       workingDir: /gen-source
-      command: ['buildah', 'bud', '--storage-driver=vfs', '--tls-verify=$(params.TLSVERIFY)', '--layers', '-f', '/gen-source/Dockerfile.gen', '-t', '$(params.IMAGE)', '.']
-      env:
-        - name: GO111MODULE
-          value: "auto"
+      command: ['buildah', 'bud', '--storage-driver=vfs', '--tls-verify=$(params.TLS_VERIFY)', '--layers', '-f', '/gen-source/Dockerfile.gen', '-t', '$(params.IMAGE)', '.']
       volumeMounts:
         - name: varlibcontainers
           mountPath: /var/lib/containers
@@ -75,7 +72,7 @@ spec:
     - name: push
       workingDir: $(workspaces.source.path)
       image: quay.io/buildah/stable:latest
-      command: ['buildah', 'push', '--storage-driver=vfs', '--tls-verify=$(params.TLSVERIFY)', '--digestfile=/gen-source/image-digest', '$(params.IMAGE)', 'docker://$(params.IMAGE)']
+      command: ['buildah', 'push', '--storage-driver=vfs', '--tls-verify=$(params.TLS_VERIFY)', '--digestfile=/gen-source/image-digest', '$(params.IMAGE)', 'docker://$(params.IMAGE)']
       volumeMounts:
         - name: varlibcontainers
           mountPath: /var/lib/containers

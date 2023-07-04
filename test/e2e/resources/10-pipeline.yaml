@@ -14,7 +14,7 @@ spec:
     - name: IMAGE
       description: Full qualified registry url, including image name and tag.
       type: string
-    - name: TLSVERIFY
+    - name: TLS_VERIFY
       type: string
       description: |
         Sets the TLS verification flags
