@@ -56,7 +56,7 @@ E2E_S2I_PARAMS_IMAGE ?= $(IMAGE_BASE)/${E2E_S2I_IMAGE_TAG}
 E2E_S2I_LANGUAGE ?= java
 
 # s2i end-to-end test pipeline params, the git repository URL and revision
-E2E_S2I_PARAMS_URL ?= https://github.com/cpuguy83/go-md2man.git #https://github.com/HouariZegai/Calculator.git  #https://github.com/sclorg/django-ex
+E2E_S2I_PARAMS_URL ?= https://github.com/sclorg/s2i-ruby-container.git #https://github.com/cpuguy83/go-md2man.git #https://github.com/HouariZegai/Calculator.git  #https://github.com/sclorg/django-ex
 E2E_S2I_PARAMS_REVISION ?= master
 
 # path to the github actions testing workflows
