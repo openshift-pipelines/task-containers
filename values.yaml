@@ -14,6 +14,7 @@ s2iBuilders:
   python: registry.access.redhat.com/ubi8/python-39:latest     #quay.io/sclorg/python-39-c9s:latest
   ruby: registry.access.redhat.com/ubi9/ruby-31:1-50           #registry.access.redhat.com/ubi8/ruby-31:1-51
   perl: registry.access.redhat.com/ubi9/perl-532:1-91
+  php: registry.access.redhat.com/ubi9/php-81:1-29
   java: registry.redhat.io/redhat-openjdk-18/openjdk18-openshift:1.15-6.1687264188 #registry.access.redhat.com/ubi8/openjdk-11:latest   
   
 annotations:
