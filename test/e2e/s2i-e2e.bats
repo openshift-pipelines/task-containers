@@ -29,7 +29,7 @@ declare -rx E2E_S2I_PARAMS_IMAGE="${E2E_S2I_PARAMS_IMAGE:-}"
         --param="TLS_VERIFY=${E2E_PARAMS_TLS_VERIFY}" \
         --param="VERBOSE=true" \
         --workspace="name=source,claimName=${E2E_S2I_PVC_NAME},subPath=${E2E_S2I_PVC_SUBPATH}" \
-        --filename=test/e2e/resources/pipeline-s2i-ruby.yaml \
+        --filename=test/e2e/resources/pipeline-s2i-perl.yaml \
         --showlog >&3
     assert_success
 
