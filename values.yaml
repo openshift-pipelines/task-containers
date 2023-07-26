@@ -9,8 +9,10 @@ images:
 # source-to-image builder images, each language represents a distinct ecosystem the builder supports,
 # sometimes it includes a specific version
 s2iBuilders:
-  go: docker.io/centos/go-toolset-7-centos7:latest
-  python: quay.io/sclorg/python-39-c9s:latest
+  
+  go: registry.redhat.io/rhel8/go-toolset:1.19.9-2             #docker.io/centos/go-toolset-7-centos7:latest
+  python: registry.access.redhat.com/ubi8/python-39:latest     #quay.io/sclorg/python-39-c9s:latest
+  java:  registry.redhat.io/redhat-openjdk-18/openjdk18-openshift:1.15-6.1687264188 #registry.access.redhat.com/ubi8/openjdk-11:latest   
 
 annotations:
   tekton.dev/pipelines.minVersion: "0.38.0"
