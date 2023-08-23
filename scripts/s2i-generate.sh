@@ -12,7 +12,7 @@ source "$(dirname ${BASH_SOURCE[0]})/s2i-common.sh"
 
 # s2i builder image name (fully qualified)
 declare -rx S2I_BUILDER_IMAGE="${S2I_BUILDER_IMAGE:-}"
-declare -rx E2E_IMAGE_SCRIPTS_URL="${E2E_IMAGE_SCRIPTS_URL:-}"
+declare -rx E2E_IMAGE_SCRIPTS_URL="${E2E_S2I_IMAGE_SCRIPTS_URL:-}"
 
 # re-using the same parameters than buildah, s2i needs buildah abilities to create the final
 # container image based on what s2i generates

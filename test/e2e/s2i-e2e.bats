@@ -10,7 +10,7 @@ declare -rx E2E_S2I_PARAMS_URL="${E2E_S2I_PARAMS_URL:-}"
 declare -rx E2E_S2I_PARAMS_REVISION="${E2E_S2I_PARAMS_REVISON:-}"
 declare -rx E2E_S2I_PARAMS_IMAGE="${E2E_S2I_PARAMS_IMAGE:-}"
 declare -rx E2E_S2I_LANGUAGE="${E2E_S2I_LANGUAGE:-}"
-declare -rx E2E_IMAGE_SCRIPTS_URL="${E2E_S2I_IMAGE_SCRIPTS_URL:-}"
+declare -rx E2E_S2I_IMAGE_SCRIPTS_URL="${E2E_S2I_IMAGE_SCRIPTS_URL:-}"
 
 
 @test "[e2e] pipeline-run using s2i task" {
