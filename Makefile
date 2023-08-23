@@ -61,7 +61,7 @@ E2E_S2I_PARAMS_REVISION ?= master
 E2E_S2I_LANGUAGE ?= go
 
 #Trial
-E2E_IMAGE_SCRIPTS_URL ?= ./s2i/bin/usr/libexec/s2i  #registry.access.redhat.com/ubi8/go-toolset:1.19.10-3:///usr/libexec/s2i
+E2E_S2I_IMAGE_SCRIPTS_URL ?=                     #./s2i/bin/usr/libexec/s2i  #registry.access.redhat.com/ubi8/go-toolset:1.19.10-3:///usr/libexec/s2i
 
 # path to the github actions testing workflows
 ACT_WORKFLOWS ?= ./.github/workflows/test.yaml
@@ -136,6 +136,7 @@ test-e2e-s2i-python: prepare-e2e-s2i
 test-e2e-s2i-python: E2E_S2I_LANGUAGE = python
 test-e2e-s2i-python: E2E_S2I_IMAGE_TAG = task-s2i-python:latest
 test-e2e-s2i-python: E2E_S2I_PARAMS_URL = https://github.com/Kalebu/Plagiarism-checker-Python
+test-e2e-s2i-python: E2E_S2I_IMAGE_SCRIPTS_URL = ./s2i/bin/usr/libexec/s2i
 test-e2e-s2i-python: test-e2e-s2i
 
 # runs the end-to-end tests for s2i-ruby
@@ -144,6 +145,7 @@ test-e2e-s2i-ruby: prepare-e2e-s2i
 test-e2e-s2i-ruby: E2E_S2I_LANGUAGE = ruby
 test-e2e-s2i-ruby: E2E_S2I_IMAGE_TAG = task-s2i-ruby:latest
 test-e2e-s2i-ruby: E2E_S2I_PARAMS_URL = https://github.com/DataDog/dd-trace-rb
+test-e2e-s2i-ruby: E2E_S2I_IMAGE_SCRIPTS_URL = ./s2i/bin/usr/libexec/s2i
 test-e2e-s2i-ruby: test-e2e-s2i
 
 # runs the end-to-end tests for s2i-perl
@@ -152,6 +154,7 @@ test-e2e-s2i-perl: prepare-e2e-s2i
 test-e2e-s2i-perl: E2E_S2I_LANGUAGE = perl
 test-e2e-s2i-perl: E2E_S2I_IMAGE_TAG = task-s2i-perl:latest
 test-e2e-s2i-perl: E2E_S2I_PARAMS_URL = https://github.com/major/MySQLTuner-perl
+test-e2e-s2i-perl: E2E_S2I_IMAGE_SCRIPTS_URL = ./s2i/bin/usr/libexec/s2i
 test-e2e-s2i-perl: test-e2e-s2i
 
 # runs the end-to-end tests for s2i-php
@@ -160,6 +163,7 @@ test-e2e-s2i-php: prepare-e2e-s2i
 test-e2e-s2i-php: E2E_S2I_LANGUAGE = php
 test-e2e-s2i-php: E2E_S2I_IMAGE_TAG = task-s2i-php:latest
 test-e2e-s2i-php: E2E_S2I_PARAMS_URL = https://github.com/PuneethReddyHC/online-shopping-system-advanced
+test-e2e-s2i-php: E2E_S2I_IMAGE_SCRIPTS_URL = ./s2i/bin/usr/libexec/s2i
 test-e2e-s2i-php: test-e2e-s2i
 
 # runs the end-to-end tests for s2i-golang
@@ -168,6 +172,7 @@ test-e2e-s2i-go: prepare-e2e-s2i
 test-e2e-s2i-go: E2E_S2I_LANGUAGE = go
 test-e2e-s2i-go: E2E_S2I_IMAGE_TAG = task-s2i-go:latest
 test-e2e-s2i-go: E2E_S2I_PARAMS_URL = https://github.com/cpuguy83/go-md2man.git
+test-e2e-s2i-go: E2E_S2I_IMAGE_SCRIPTS_URL = ./s2i/bin/usr/libexec/s2i
 test-e2e-s2i-go: test-e2e-s2i
 
 # runs the end-to-end tests for s2i-nodejs
@@ -176,6 +181,7 @@ test-e2e-s2i-nodejs: prepare-e2e-s2i
 test-e2e-s2i-nodejs: E2E_S2I_LANGUAGE = nodejs
 test-e2e-s2i-nodejs: E2E_S2I_IMAGE_TAG = task-s2i-nodejs:latest
 test-e2e-s2i-nodejs: E2E_S2I_PARAMS_URL = https://github.com/ashadnasim52/sentiment-analysis
+test-e2e-s2i-nodejs: E2E_S2I_IMAGE_SCRIPTS_URL = ./s2i/bin/usr/libexec/s2i
 test-e2e-s2i-nodejs: test-e2e-s2i
 
 # runs the end-to-end tests for s2i
