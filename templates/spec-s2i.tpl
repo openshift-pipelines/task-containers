@@ -19,6 +19,12 @@ params:
     type: string
     description: |
       Fully qualified container image name to be built by s2i.
+  - name: IMAGE_SCRIPTS_URL
+    type: string
+    #default: image:///usr/libexec/s2i          #"image://
+    description: |
+      URL containing the default assemble and run scripts for the builder image.
+      
 
 {{- include "params_buildah_common" . | nindent 2 }}
 {{- include "params_common" . | nindent 2 }}
@@ -37,6 +43,7 @@ stepTemplate:
       "params.SKIP_PUSH"
       "params.TLS_VERIFY"
       "params.VERBOSE"
+      "params.IMAGE_SCRIPTS_URL"          
       "workspaces.source.bound"
       "workspaces.source.path"
       "results.IMAGE_URL.path"

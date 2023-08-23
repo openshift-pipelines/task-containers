@@ -58,7 +58,10 @@ E2E_S2I_PARAMS_URL ?= https://github.com/cpuguy83/go-md2man.git
 E2E_S2I_PARAMS_REVISION ?= master
 
 # s2i end-to-end test language of choice for using correct builder image
-E2E_S2I_LANGUAGE ?= python
+E2E_S2I_LANGUAGE ?= go
+
+#Trial
+E2E_IMAGE_SCRIPTS_URL ?=  ./s2i/bin/usr/libexec/s2i  #registry.access.redhat.com/ubi8/go-toolset:1.19.10-3:///usr/libexec/s2i
 
 # path to the github actions testing workflows
 ACT_WORKFLOWS ?= ./.github/workflows/test.yaml

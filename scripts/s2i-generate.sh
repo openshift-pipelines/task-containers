@@ -12,6 +12,7 @@ source "$(dirname ${BASH_SOURCE[0]})/s2i-common.sh"
 
 # s2i builder image name (fully qualified)
 declare -rx S2I_BUILDER_IMAGE="${S2I_BUILDER_IMAGE:-}"
+declare -rx E2E_IMAGE_SCRIPTS_URL="${E2E_IMAGE_SCRIPTS_URL:-}"
 
 # re-using the same parameters than buildah, s2i needs buildah abilities to create the final
 # container image based on what s2i generates
@@ -38,7 +39,9 @@ phase "Inspecting context subdirectory '${PARAMS_SUBDIRECTORY}'"
 phase "Generating the Containerfile for S2I builder image '${S2I_BUILDER_IMAGE}'"
 s2i --loglevel "${S2I_LOGLEVEL}" \
     build "${PARAMS_SUBDIRECTORY}" "${S2I_BUILDER_IMAGE}" \
-        --as-dockerfile "${S2I_CONTAINERFILE_PATH}"
+        --as-dockerfile "${S2I_CONTAINERFILE_PATH}" \
+        --image-scripts-url "${E2E_IMAGE_SCRIPTS_URL}"
+
 
 phase "Inspecting the Containerfile generated at '${S2I_CONTAINERFILE_PATH}'"
 [[ ! -f "${S2I_CONTAINERFILE_PATH}" ]] &&

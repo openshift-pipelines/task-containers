@@ -10,6 +10,8 @@ declare -rx E2E_S2I_PARAMS_URL="${E2E_S2I_PARAMS_URL:-}"
 declare -rx E2E_S2I_PARAMS_REVISION="${E2E_S2I_PARAMS_REVISON:-}"
 declare -rx E2E_S2I_PARAMS_IMAGE="${E2E_S2I_PARAMS_IMAGE:-}"
 declare -rx E2E_S2I_LANGUAGE="${E2E_S2I_LANGUAGE:-}"
+declare -rx E2E_IMAGE_SCRIPTS_URL="${E2E_IMAGE_SCRIPTS_URL:-}"
+
 
 @test "[e2e] pipeline-run using s2i task" {
     [ -n "${E2E_S2I_PVC_NAME}" ]
@@ -17,8 +19,9 @@ declare -rx E2E_S2I_LANGUAGE="${E2E_S2I_LANGUAGE:-}"
     [ -n "${E2E_S2I_PARAMS_URL}" ]
     [ -n "${E2E_S2I_PARAMS_REVISION}" ]
     [ -n "${E2E_S2I_PARAMS_IMAGE}" ]
+     [ -n "${E2E_IMAGE_SCRIPTS_URL}" ]
     [ -n "${E2E_PARAMS_TLS_VERIFY}" ]
-
+   
     # cleaning up existing resources before starting a new pipelinerun
     run kubectl delete pipelinerun --all
     assert_success
@@ -65,9 +68,10 @@ EOF
     assert_success
 
     tkn pipeline start task-s2i-${E2E_S2I_LANGUAGE} \
-        --param="URL=${E2E_S2I_PARAMS_URL}" \
+        --param="URL=${E2E_S2I_PARAMS_URL}" \                                                                             
         --param="REVISION=${E2E_S2I_PARAMS_REVISION}" \
         --param="IMAGE=${E2E_S2I_PARAMS_IMAGE}" \
+        --param="IMAGE_SCRIPTS_URL=${E2E_IMAGE_SCRIPTS_URL}" \ 
         --param="TLS_VERIFY=${E2E_PARAMS_TLS_VERIFY}" \
         --param="VERBOSE=true" \
         --workspace="name=source,claimName=${E2E_S2I_PVC_NAME},subPath=${E2E_S2I_PVC_SUBPATH}" \
