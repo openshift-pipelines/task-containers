@@ -35,6 +35,7 @@ stepTemplate:
   env:
 {{- $variables := list
       "params.IMAGE"
+      "params.IMAGE_SCRIPTS_URL"
       "params.SUBDIRECTORY"
       "params.STORAGE_DRIVER"
       "params.BUILD_EXTRA_ARGS"
