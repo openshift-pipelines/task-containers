@@ -20,7 +20,7 @@ params:
     description: |
       Fully qualified container image name to be built by s2i.
   - name: IMAGE_SCRIPTS_URL
-    type: string                                   #default: image:///usr/libexec/s2i          #"image://
+    type: string                                   #default: image:///usr/libexec/s2i         
     description: |
       URL containing the default assemble and run scripts for the builder image.
       
