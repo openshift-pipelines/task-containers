@@ -19,7 +19,6 @@ declare -rx E2E_IMAGE_SCRIPTS_URL="${E2E_IMAGE_SCRIPTS_URL:-}"
     [ -n "${E2E_S2I_PARAMS_URL}" ]
     [ -n "${E2E_S2I_PARAMS_REVISION}" ]
     [ -n "${E2E_S2I_PARAMS_IMAGE}" ]
-     [ -n "${E2E_IMAGE_SCRIPTS_URL}" ]
     [ -n "${E2E_PARAMS_TLS_VERIFY}" ]
    
     # cleaning up existing resources before starting a new pipelinerun

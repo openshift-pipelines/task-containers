@@ -20,8 +20,7 @@ params:
     description: |
       Fully qualified container image name to be built by s2i.
   - name: IMAGE_SCRIPTS_URL
-    type: string
-    #default: image:///usr/libexec/s2i          #"image://
+    type: string                                   #default: image:///usr/libexec/s2i          #"image://
     description: |
       URL containing the default assemble and run scripts for the builder image.
       
@@ -42,8 +41,7 @@ stepTemplate:
       "params.PUSH_EXTRA_ARGS"
       "params.SKIP_PUSH"
       "params.TLS_VERIFY"
-      "params.VERBOSE"
-      "params.IMAGE_SCRIPTS_URL"          
+      "params.VERBOSE"         
       "workspaces.source.bound"
       "workspaces.source.path"
       "results.IMAGE_URL.path"
