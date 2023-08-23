@@ -20,7 +20,7 @@ declare -rx E2E_S2I_IMAGE_SCRIPTS_URL="${E2E_S2I_IMAGE_SCRIPTS_URL:-}"
     [ -n "${E2E_S2I_PARAMS_REVISION}" ]
     [ -n "${E2E_S2I_PARAMS_IMAGE}" ]
     [ -n "${E2E_PARAMS_TLS_VERIFY}" ]
-    [ -n "${E2E_S2I_IMAGE_SCRIPTS_URL}" ]
+    
    
     # cleaning up existing resources before starting a new pipelinerun
     run kubectl delete pipelinerun --all
