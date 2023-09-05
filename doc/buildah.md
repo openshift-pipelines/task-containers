@@ -1,9 +1,9 @@
-Containers Tekton Tasks
+`Buildah` Tekton Task
 -----------------------
 
-# `Buildah` Tekton Task
+# The `buildah` Task is meant to build [OCI][OCI] container images without the requirement of container runtime daemon like Docker daemon using [Buildah][containersBuildah], the Task results contain the image name and the SHA256 image digest.
 
-The `buildah` Task is meant to build [OCI][OCI] container images without the requirement of container runtime daemon like Docker daemon using [Buildah][containersBuildah], the Task results contain the image name and the SHA256 image digest.
+## Usage
 
 Please, consider the usage example below:
 
@@ -50,8 +50,8 @@ Then make sure the Secret is linked with the Service-Account running the `TaskRu
 | `VERBOSE` | `string` | `false` | Shows a more verbose (debug) output. |
 | `SUBDIRECTORY` | `string` | `.` | Relative subdirectory to the `source` Workspace for the build-context. |
 | `STORAGE_DRIVER` | `string` | `overlay` | Set buildah storage driver to reflect the currrent cluster node's settings. |
-| `BUILD_EXTRA_ARGS` | `string` | `""` | Extra parameters passed for the build command when building images. |
-| `PUSH_EXTRA_ARGS` | `string` | `""` | Extra parameters passed for the push command when pushing images. |
+| `BUILD_EXTRA_ARGS` | `string` | `` | Extra parameters passed for the build command when building images. |
+| `PUSH_EXTRA_ARGS` | `string` | `` | Extra parameters passed for the push command when pushing images. |
 | `SKIP_PUSH` | `string` | `false` | Skip pushing the image to the container registry. |
 
 
@@ -66,3 +66,8 @@ Then make sure the Secret is linked with the Service-Account running the `TaskRu
 [containersBuildah]: https://github.com/containers/buildah
 [OCI]: https://opencontainers.org/
 
+## Workspace
+
+| Name         | Optional                      | Description                      |
+| :------------ | :------------------------: | :--------------------------- |
+| `source` | `false` | Container build context, like for instnace a application source code followed by a `Containerfile`. |
