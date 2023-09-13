@@ -1,9 +1,8 @@
 name: release
 
+# should only run when manually dispatched
 on:
-  push:
-    tags:
-      - "*"
+  workflow_dispatch: {}
 
 jobs:
   release:
