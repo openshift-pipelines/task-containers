@@ -44,6 +44,11 @@ E2E_S2I_PVC ?= test/e2e/resources/pvc-s2i.yaml
 E2E_S2I_PVC_NAME ?= task-s2i
 E2E_S2I_PVC_SUBPATH ?= source
 
+
+E2E_MVN_PVC ?= test/e2e/resources/pvc-mvn.yaml
+E2E_MVN_PARAMS_URL ?= https://github.com/shashirajraja/shopping-cart
+E2E_MVN_PARAMS_REVISION ?= master
+
 # auxiliary task to create a Containerfile for buildah end-to-end testing
 E2E_BUILDAH_TASK_CONTAINERFILE_STUB ?= test/e2e/resources/task-containerfile-stub.yaml
 # container image name and tag to be created by buildah during e2e
@@ -127,6 +132,10 @@ prepare-e2e-buildah: task-git
 .PHONY: prepare-e2e-s2i
 prepare-e2e-s2i: task-git
 	kubectl apply -f $(E2E_S2I_PVC)
+
+.PHONY: prepare-e2e-mvn
+prepare-e2e-mvn: 
+	kubectl apply -f ${E2E_MVN_PVC}
 
 # runs bats-core against the pre-determined tests
 .PHONY: bats
@@ -218,11 +227,17 @@ test-e2e-s2i: prepare-e2e-s2i
 test-e2e-s2i: E2E_TESTS = $(E2E_TEST_DIR)/*s2i*.bats
 test-e2e-s2i: bats
 
+.PHONY: test-e2e-mvn
+test-e2e-mvn: prepare-e2e-mvn
+test-e2e-mvn: E2E_TESTS = $(E2E_TEST_DIR)/*mvn*.bats
+test-e2e-mvn: bats
+
 # runs all the end-to-end tests against the current kubernetes context, it will required a cluster
 # with Tekton Pipelines (OpenShift Pipelines) and a container registry instance
 .PHONY: test-e2e
 test-e2e: prepare-e2e-buildah
 test-e2e: prepare-e2e-s2i
+test-e2e: prepare-e2e-mvn
 test-e2e: bats
 
 # act runs the github actions workflows, so by default only running the test workflow (integration

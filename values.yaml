@@ -5,6 +5,8 @@ images:
   skopeo: quay.io/skopeo/stable:latest
   buildah: registry.access.redhat.com/ubi8/buildah:latest
   s2i: quay.io/openshift-pipeline/s2i:nightly
+  minimal: registry.access.redhat.com/ubi8/ubi-minimal:8.2
+  mvn: registry.access.redhat.com/ubi8/openjdk-11:latest
 
 # source-to-image builder images, each language represents a distinct ecosystem the builder supports,
 # sometimes it includes a specific version
