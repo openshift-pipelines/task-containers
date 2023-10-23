@@ -90,13 +90,25 @@ helm-template:
 
 default: helm-template
 
+generate-s2i-docs:
+	mkdir -p $(RELEASE_DIR) || true
+	for t in templates/docs/s2i-*.md; do \
+		doc_file="$$(basename $${t})"; \
+	    echo "# Rendering template $${t} into $${doc_file}"; \
+	    make helm-template ARGS="--show-only=$${t}" >${RELEASE_DIR}/$${doc_file}; \
+	done
+
 # renders all "task-*" named templates into the release directory, using the original
 # template filename as the Task name on release direcotry.
 helm-template-tasks:
 	mkdir -p $(RELEASE_DIR) || true
-	for t in `ls -1 templates/task-*.yaml`; do \
-		helm template --show-only=$$t . >$(RELEASE_DIR)/`basename $$t`; \
+	for t in templates/task-*.yaml; do \
+	    task_file="$$(basename $${t})"; \
+	    echo "# Rendering template $${t} into $${task_file}"; \
+	    make helm-template ARGS="--show-only=$${t}" >${RELEASE_DIR}/$${task_file}; \
 	done
+
+release: helm-template-tasks generate-s2i-docs
 
 # renders and installs the resources (task)
 install:

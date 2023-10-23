@@ -1,47 +1,25 @@
-Source-to-Image Tekton Tasks (`s2i`)
-------------------------------------
+{{- define "s2i_doc" -}}
+  {{- $s2iLanguage := index . 1 -}}
+  {{- $s2iBuilderImage := index . 2 -}}
+  {{- with index . 0 -}}
+## Source-to-Image Tekton Tasks (`s2i-{{ $s2iLanguage }}`)
 
 # Abstract
 
-Describes the Tekton Tasks supporting Source-to-Image for various ecosystems.
+Describes the Tekton Task supporting Source-to-Image for {{ $s2iLanguage }}
 
-# `s2i` Builder Images
+# Abstract
 
-This section we explain each language ecosystem comes with a predefined set of builder images, supported by Red Hat.
+The `s2i-{{ $s2iLanguage }}` Task helps in building reproducible container images from source code.
 
-The `s2i` Task helps in building reproducible container images from source code i.e. task for supporting s2i functionality.
+`s2i-{{ $s2iLanguage }}` Task is customized with the builder image for {{ $s2iLanguage }}.
 
-The s2i Task has been customized with builder images specific to various languages and have been named appropriately as follows:
-
-| Task Name  | Builder Image Used                                                     |
-| ---------- | ---------------------------------------------------------------------- |
-| s2i-python | http://registry.access.redhat.com/ubi8/python-39:latest                |
-| s2i-go     | http://registry.access.redhat.com/ubi8/go-toolset:1.19.10-3            |
-| s2i-java   | http://registry.access.redhat.com/ubi8/openjdk-11:latest               |
-| s2i-dotnet | http://registry.access.redhat.com/ubi8/dotnet-60:6.0-37.20230802191230 |
-| s2i-php    | http://registry.access.redhat.com/ubi9/php-81:1-29                     |
-| s2i-nodejs | http://registry.access.redhat.com/ubi8/nodejs-18:latest                |
-| s2i-perl   | http://registry.access.redhat.com/ubi9/perl-532:1-91                   |
-| s2i-ruby   | http://registry.access.redhat.com/ubi9/ruby-31:1-50                    |
-
-In case, the above builder images associated with the languages aren’t satisfactory for your source code, you can change it using appropriate parameter.
+Click [here]({{ $s2iBuilderImage }}) to know more about the builder image used for {{ $s2iLanguage }}.
 
 # Usage
 
 Please, consider the usage example below:
 
-```yaml
----
-apiVersion: tekton.dev/v1beta1
-kind: TaskRun
-metadata: {}
-spec:
-  taskRef:
-    name: s2i-python
-  params:
-    - name: IMAGE
-      value: registry.registry.svc.cluster.local:32222/task-containers/task-s2i-python:latest
-```
 
 In case the Container Registry requires authentication, please consider the [Tekton Pipelines documentation][tektonPipelineAuth]. In a nutshell, you need to create a Kubernetes Secret describing the following attributes:
 
@@ -56,8 +34,7 @@ Then make sure the Secret is linked with the Service-Account running the `TaskRu
 
 ## Workspaces
 
-All of the s2i tasks use the `source` workspace which is meant to contain the Application source code, which acts as the build context for S2I workflow.
-
+s2i-{{ $s2iLanguage }} task uses the `source` workspace which is meant to contain the Application source code, it also acts as the build context for S2I workflow.
 
 ## Params
 
@@ -81,3 +58,5 @@ All of the s2i tasks use the `source` workspace which is meant to contain the Ap
 | ------------ | ------------------------------- |
 | IMAGE_URL    | Fully qualified image name.     |
 | IMAGE_DIGEST | Digest of the image just built. |
+  {{- end -}}
+{{- end -}}
