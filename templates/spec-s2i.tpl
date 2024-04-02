@@ -18,7 +18,11 @@ workspaces:
     description: >-
         An optional workspace that allows providing a .docker/config.json file for Buildah to access the container registry.
         The file should be placed at the root of the Workspace with name config.json.
-        
+  - name: nexus_credentials
+    description: >-
+        An optional workspace that allows providing Nexus repository credentials for accessing the Nexus repository.
+    optional: true
+     
 params:
   - name: IMAGE
     type: string
@@ -58,6 +62,8 @@ stepTemplate:
       "workspaces.source.path"
       "workspaces.dockerconfig.bound"
       "workspaces.dockerconfig.path"
+      "workspaces.nexus_credentials.bound"
+      "workspaces.nexus_credentials.path"
       "results.IMAGE_URL.path"
       "results.IMAGE_DIGEST.path"
 }}

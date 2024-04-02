@@ -45,6 +45,18 @@ if [ ${#ENV_VARS[@]} -gt 0 ]; then
 fi
 
 #
+# Load Nexus repository credentials from Secret into an optional workspace
+#
+
+# Mount the nexus-credentials workspace if it's bound and load the credentials
+if [ "${WORKSPACES_NEXUS_CREDENTIALS_BOUND}" == "true" ]; then
+    phase "Loading Nexus repository credentials from workspace '${WORKSPACES_NEXUS_CREDENTIALS_PATH}'"
+    cp -r "${WORKSPACES_NEXUS_CREDENTIALS_PATH}/"* "${WORKSPACES_SOURCE_PATH}/.m2/"
+else
+    phase "Nexus repository credentials workspace is not bound, skipping..."
+fi
+
+#
 # S2I Generate
 #
 
