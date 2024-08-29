@@ -61,6 +61,8 @@ spec:
   volumes:
     - name: scripts-dir
       emptyDir: {}
+    - name: tekton-home
+      emptyDir: {}
 
   stepTemplate:
     env:
@@ -79,9 +81,14 @@ spec:
 
   steps:
     - name: skopeo-copy
+      env:
+        - name: HOME
+          value: /tekton/home
       image: {{ .Values.images.skopeo }}
       script: |
 {{- include "load_scripts" ( list . ( list "skopeo-" ) ( list "/scripts/skopeo-copy.sh" "/scripts/skopeo-results.sh" ) ) | nindent 8 }}
       volumeMounts:
         - name: scripts-dir
           mountPath: /scripts
+        - name: tekton-home
+          mountPath: /tekton/home
