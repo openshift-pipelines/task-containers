@@ -50,6 +50,10 @@ E2E_BUILDAH_IMAGE_TAG ?= task-buildah:latest
 # fully qualified container image passed to buildah task IMAGE param
 E2E_BUILDAH_PARAMS_IMAGE ?= $(IMAGE_BASE)/${E2E_BUILDAH_IMAGE_TAG}
 
+E2E_BUILDAH_USER_NAMESPACE="auto"   # Options: "", "private", "auto", "host", or a specific path
+E2E_BUILDAH_UID_MAP="0:100000:65536" # Mapping for container UIDs "CONTAINER_UID:HOST_UID:SIZE".
+E2E_BUILDAH_GID_MAP="0:100000:65536" # Mapping for container GIDs "CONTAINER_UID:HOST_UID:SIZE".
+
 # container image name and tag to be created by s2i during e2e
 E2E_S2I_IMAGE_TAG ?= task-s2i:latest
 # (fully qualified) container image passed to s2i task IMAGE param
@@ -175,8 +179,15 @@ test-e2e-buildah: bats
 test-e2e-buildah-openshift: prepare-e2e-buildah
 test-e2e-buildah-openshift: REGISTRY_URL = image-registry.openshift-image-registry.svc.cluster.local:5000
 test-e2e-buildah-openshift: REGISTRY_NAMESPACE = $(shell oc project -q)
-test-e2e-buildah-openshift: E2E_TESTS = $(E2E_TEST_DIR)/*buildah*.bats
+test-e2e-buildah-openshift: E2E_TESTS = $(E2E_TEST_DIR)/*buildah.bats
 test-e2e-buildah-openshift: bats
+
+.PHONY: test-e2e-buildah-userns-openshift
+test-e2e-buildah-userns-openshift: prepare-e2e-buildah
+test-e2e-buildah-userns-openshift: REGISTRY_URL = image-registry.openshift-image-registry.svc.cluster.local:5000
+test-e2e-buildah-userns-openshift: REGISTRY_NAMESPACE = $(shell oc project -q)
+test-e2e-buildah-userns-openshift: E2E_TESTS = $(E2E_TEST_DIR)/*buildah-userns.bats
+test-e2e-buildah-userns-openshift: bats
 
 # runs the end-to-end tests for s2i-python
 .PHONY: test-e2e-s2i-python
