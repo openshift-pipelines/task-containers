@@ -1,0 +1,128 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: buildah-userns
+  labels:
+    app.kubernetes.io/version: {{ .Chart.Version }}
+{{- if .Values.annotations }}
+  annotations:
+  {{- .Values.annotations | toYaml | nindent 4 }}
+    io.kubernetes.cri-o.userns-mode: "auto"
+    io.openshift.builder: "true"
+{{- end }}
+spec:
+  description: |
+    Buildah task builds source into a container image and
+    then pushes it to a container registry using user namespaces.
+
+  workspaces:
+    - name: source
+      optional: false
+      description: |
+        Container build context, like for instnace a application source code
+        followed by a `Dockerfile`.
+    - name: dockerconfig
+      description: >-
+        An optional workspace that allows providing a .docker/config.json file
+        for Buildah to access the container registry.
+        The file should be placed at the root of the Workspace with name config.json
+        or .dockerconfigjson.
+      optional: true
+    - name: rhel-entitlement
+      description: >-
+        An optional workspace that allows providing the entitlement keys
+        for Buildah to access subscription. The mounted workspace contains
+        entitlement.pem and entitlement-key.pem.
+      optional: true
+      mountPath: /tmp/entitlement
+  params:
+    - name: IMAGE
+      type: string
+      description: |
+        Fully qualified container image name to be built by buildah.
+    - name: DOCKERFILE
+      type: string
+      default: ./Dockerfile
+      description: |
+        Path to the `Dockerfile` (or `Containerfile`) relative to the `source` workspace.
+    - name: BUILD_ARGS
+      type: array
+      default:
+        - ""
+      description: |
+        Dockerfile build arguments, array of key=value
+    - name: USER_NAMESPACE
+      type: string
+      description: |
+        User namespace configuration. Valid values: "", "private", "auto", "host", or path to an existing user namespace.
+      default: "auto"
+    - name: UID_MAP
+      type: string
+      description: |
+        UID mapping for user namespace, format: "CONTAINER_UID:HOST_UID:SIZE".
+      default: ""
+    - name: GID_MAP
+      type: string
+      description: |
+        GID mapping for user namespace, format: "CONTAINER_GID:HOST_GID:SIZE".
+      default: ""
+
+{{- include "params_buildah_common" . | nindent 4 }}
+{{- include "params_common" . | nindent 4 }}
+
+  results:
+{{- include "results_buildah" . | nindent 4 }}
+
+  stepTemplate:
+    env:
+{{- $variables := list
+      "params.IMAGE"
+      "params.CONTEXT"
+      "params.DOCKERFILE"
+      "params.FORMAT"
+      "params.STORAGE_DRIVER"
+      "params.BUILD_EXTRA_ARGS"
+      "params.PUSH_EXTRA_ARGS"
+      "params.SKIP_PUSH"
+      "params.TLS_VERIFY"
+      "params.VERBOSE"
+      "params.USER_NAMESPACE"
+      "params.UID_MAP"
+      "params.GID_MAP"
+      "workspaces.source.bound"
+      "workspaces.source.path"
+      "workspaces.dockerconfig.bound"
+      "workspaces.dockerconfig.path"
+      "workspaces.rhel-entitlement.bound"
+      "workspaces.rhel-entitlement.path"
+      "results.IMAGE_URL.path"
+      "results.IMAGE_DIGEST.path"
+}}
+{{- include "environment" ( list $variables ) | nindent 6 }}
+
+  steps:
+    - name: build
+      image: {{ .Values.images.buildah }}
+      workingDir: $(workspaces.source.path)
+      securityContext:
+        capabilities:
+          add: ["SETFCAP"]   
+        runAsUser: 1000
+      args:
+        - $(params.BUILD_ARGS[*])
+      script: |
+{{- include "load_scripts" ( list . ( list "buildah-" ) ( list "/scripts/buildah-bud-userns.sh" ) ) | nindent 8 }}
+      volumeMounts:
+        - name: scripts-dir
+          mountPath: /scripts
+        - name: varlibcontainers
+          mountPath: /workspace/source/build/.local/share/containers
+
+  volumes:
+    - name: scripts-dir
+      emptyDir: {}
+    - name: varlibcontainers
+      emptyDir: {}
+
+
