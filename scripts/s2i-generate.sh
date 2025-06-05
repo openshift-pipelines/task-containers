@@ -14,7 +14,7 @@ source "$(dirname ${BASH_SOURCE[0]})/s2i-common.sh"
 declare -rx S2I_BUILDER_IMAGE="${S2I_BUILDER_IMAGE:-}"
 
 # takes the values in argument ENV_VARS and creates an array using those values
-declare -ra ENV_VARS=(${@})
+declare -ra ENV_VARS=("${@}")
 
 # re-using the same parameters than buildah, s2i needs buildah abilities to create the final
 # container image based on what s2i generates
