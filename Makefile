@@ -180,6 +180,19 @@ test-e2e-buildah-openshift: REGISTRY_NAMESPACE = $(shell oc project -q)
 test-e2e-buildah-openshift: E2E_TESTS = $(E2E_TEST_DIR)/*buildah*.bats
 test-e2e-buildah-openshift: bats
 
+# runs the end-to-end tests for buildah-ns
+.PHONY: test-e2e-buildah-ns
+test-e2e-buildah-ns: prepare-e2e-buildah
+test-e2e-buildah-ns: E2E_TESTS = $(E2E_TEST_DIR)/*buildah-ns*.bats
+test-e2e-buildah-ns: bats
+
+.PHONY: test-e2e-buildah-ns-openshift
+test-e2e-buildah-ns-openshift: prepare-e2e-buildah
+test-e2e-buildah-ns-openshift: REGISTRY_URL = image-registry.openshift-image-registry.svc.cluster.local:5000
+test-e2e-buildah-ns-openshift: REGISTRY_NAMESPACE = $(shell oc project -q)
+test-e2e-buildah-ns-openshift: E2E_TESTS = $(E2E_TEST_DIR)/*buildah-ns*.bats
+test-e2e-buildah-ns-openshift: bats
+
 # runs the end-to-end tests for s2i-python
 .PHONY: test-e2e-s2i-python
 test-e2e-s2i-python: E2E_S2I_LANGUAGE = python
@@ -254,7 +267,7 @@ test-e2e-s2i-openshift: bats
 # runs all the end-to-end tests against the current kubernetes context, it will required a cluster
 # with Tekton Pipelines (OpenShift Pipelines) and a container registry instance
 .PHONY: test-e2e
-test-e2e: test-e2e-buildah test-e2e-skopeo-copy test-e2e-s2i
+test-e2e: test-e2e-buildah test-e2e-buildah-ns test-e2e-skopeo-copy test-e2e-s2i
 
 
 # Run all the end-to-end tests against the current openshift context.
