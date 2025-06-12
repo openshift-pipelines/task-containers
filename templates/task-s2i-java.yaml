@@ -18,3 +18,5 @@ spec:
     {{ $s2iBuilderImage | quote }}.
 
 {{ include "spec_s2i" ( list . $s2iBuilderImage ) | nindent 2 }}
+{{- /* now clear it so other tasks pick up the default value */ -}}
+{{- $_ := set .Values "IMAGE_SCRIPTS_URL" "" -}}
