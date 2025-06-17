@@ -29,3 +29,9 @@ annotations:
   artifacthub.io/recommendations: |
     - url: https://tekton.dev/
   artifacthub.io/category: integration-delivery
+
+
+taskAnnotations:
+  io.kubernetes.cri-o.userns-mode: "auto"
+  io.openshift.builder: "true"
+

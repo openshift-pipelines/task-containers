@@ -1,0 +1,23 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: buildah-ns
+  labels:
+    app.kubernetes.io/version: {{ .Chart.Version }}
+
+  {{- $annotations := dict }}
+
+  {{- if .Values.annotations }}
+    {{- $_ := merge $annotations .Values.annotations }}
+  {{- end }}
+
+  {{- if .Values.taskAnnotations }}
+    {{- $_ := merge $annotations .Values.taskAnnotations }}
+  {{- end }}
+
+  {{- if $annotations }}
+  annotations:
+{{ $annotations | toYaml | nindent 4 }}
+  {{- end }}
+{{- include "spec_buildah" ( list . "Buildah task builds source into a container image and\nthen pushes it to a container registry. This task runs with\nuser namespace isolation for enhanced security, providing\nbetter isolation and reduced privileges during the build process." ) | nindent 0 }}
