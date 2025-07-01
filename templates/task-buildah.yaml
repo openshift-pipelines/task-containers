@@ -50,6 +50,12 @@ spec:
         - ""
       description: |
         Dockerfile build arguments, array of key=value
+    - name: TMPDIR
+      type: string
+      default:
+        - "/var/tmp"
+      description: |
+        Path to the buildah temp directory (useful for building very large images to PVC path)
 
 {{- include "params_buildah_common" . | nindent 4 }}
 {{- include "params_common" . | nindent 4 }}
@@ -59,6 +65,8 @@ spec:
 
   stepTemplate:
     env:
+      - name: TMPDIR
+        value: $(params.TMPDIR)
 {{- $variables := list
       "params.IMAGE"
       "params.CONTEXT"
