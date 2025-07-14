@@ -87,9 +87,16 @@ Then make sure the Secret is linked with the Service-Account running the `TaskRu
 This task includes enhanced security through user namespace isolation with the following key characteristics:
 
 
-### UID Mapping Behavior
+## UID Mapping Behavior
 
-When below annotations are applied, the container exhibits the following UID mapping behavior:
+When the following annotations are applied:
+
+```yaml
+io.kubernetes.cri-o.userns-mode: "auto"
+io.openshift.builder: "true"
+```
+
+the container exhibits the following UID mapping behavior:
 
 - **Inside the container**: The process runs as UID 0 (root within the user namespace)
 - **Outside the container**: The process runs as a non-zero UID on the host system
