@@ -29,7 +29,11 @@ find_doc() {
     declare task_name="${1}"
     [[ "${task_name}" == "task-s2i"* ]] &&
         task_name="task-s2i"
-    find docs/ -name "${task_name}*.md"
+    if [[ -f "docs/${task_name}.md" ]]; then
+        echo "docs/${task_name}.md"
+    else
+        find docs/ -name "${task_name}*.md"
+    fi
 }
 
 #
